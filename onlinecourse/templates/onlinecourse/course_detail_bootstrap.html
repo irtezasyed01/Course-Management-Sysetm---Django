@@ -97,6 +97,40 @@
 
             <!--Check here to see more details Bootstrap checkbox
              https://www.w3schools.com/bootstrap4/bootstrap_forms_inputs.asp-->
+   
+        
+        <!-- Task: show questions and choices -->
+        {% if user.is_authenticated %}
+            <div class="mt-3">
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#exam">
+                    Start Exam
+                </button>
+            </div>
+
+            <div id="exam" class="collapse mt-3">
+                <form id="questionform" action="{% url 'onlinecourse:submit' course.id %}" method="post">
+                    {% csrf_token %}
+                    {% for question in course.questions.all %}
+                        <div class="card mt-1">
+                            <div class="card-header"><h5>{{ question.question_text }}</h5></div>
+                            <div class="card-body">
+                                {% for choice in question.choices.all %}
+                                    <div class="form-check">
+                                        <input type="checkbox" name="choices" id="choice_{{ choice.id }}"
+                                               class="form-check-input" value="{{ choice.id }}">
+                                        <label class="form-check-label" for="choice_{{ choice.id }}">
+                                            {{ choice.choice_text }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <input class="btn btn-success btn-block mt-3" type="submit" value="Submit">
+                </form>
+            </div>
+        {% endif %}
+   
     </div>
 </body>
 </html>
