@@ -39,16 +39,32 @@
     {% if grade > 80 %}
     <div class="alert alert-success">
        <!--HINT Display passed info -->
+       Congratulations! You have passed the exam.
     </div>
         {% else %}
         <div class="alert alert-danger">
             <!--HINT Display failed info -->
+            Sorry, you have not passed the exam. Please review the incorrect choices below and retake the exam.
+        </div>
         </div>
         <a class="btn btn-link text-danger" href="{% url 'onlinecourse:course_details' course.id %}">Re-test</a>
         {% endif %}
         <div class="card-columns-vertical mt-1">
         <h5 class="">Exam results</h5>
             <!--HINT Display exam results-->
+            {% for question, is_correct in question_results.items %}
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Question {{ forloop.counter }}</h6>
+                    <p class="card-text">{{ question.question_text }}</p>
+                    {% if is_correct %}
+                    <p class="text-success">Correct Answer</p>
+                    {% else %}
+                    <p class="text-danger">Incorrect Answer</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </body>
